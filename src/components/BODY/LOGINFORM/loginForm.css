@@ -1,0 +1,17 @@
+.login {
+    padding: 0 70px;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form__header {
+    font-weight: 400;
+    font-size: 60px;
+    letter-spacing: 4px;
+    margin-bottom: 70px;
+}

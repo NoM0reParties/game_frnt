@@ -1,0 +1,11 @@
+.main__form-btn {
+    width: 200px;
+    height: 70px;
+    background-color: #344566;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 20px;
+    border: none;
+    justify-content: space-around;
+    cursor: pointer;
+}

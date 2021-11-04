@@ -1,0 +1,55 @@
+.ready__block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ready__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ready__refresh {
+    height: 50px;
+    width: 200px;
+    margin-bottom: 50px;
+    font-size: 20px;
+    background: none;
+    color: white;
+    background-color: #344556;
+    border: none;
+    border-radius: 20px;
+}
+
+.ready__button {
+    height: 300px;
+    width: 300px;
+    background: none;
+    font-size: 36px;
+    font-weight: 600;
+    color: white;
+    background-color: #fd7404;
+    border: none;
+    border-radius: 100%;
+}
+
+.ready__button:active {
+    background-color: #f89900;
+}
+
+.score {
+    line-height: 70px;
+    font-size: 36px;
+    font-weight: 600;
+    color: white;
+}
+
+.ready_notion {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+    color: white;
+}

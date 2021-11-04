@@ -1,0 +1,17 @@
+.header__login {
+    
+}
+
+.header__login-btn {
+    text-decoration: none;
+    border: none;
+    font-size: 16px;
+    color: #1f2b44;
+    background: none;
+    padding: 0 20px ;
+    cursor: pointer;
+}
+
+.header__login-btn:not(:last-child) {
+    border-right: 2px solid black;
+}

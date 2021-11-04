@@ -1,0 +1,28 @@
+.menu {
+    padding: 0 20px;
+    list-style: none;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.menu__item {
+    color: #1f2b44;
+    font-size: 24px;
+    margin-right: 150px;
+    cursor: pointer;
+}
+
+.menu__item-link {
+    text-decoration: none;
+}
+
+@media(max-width: 720px) {
+    .menu__item {
+        color: #1f2b44;
+        font-size: 24px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+}

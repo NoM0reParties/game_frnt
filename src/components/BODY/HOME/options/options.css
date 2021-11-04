@@ -1,0 +1,37 @@
+.options {
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+.options__item {
+    display: flex;
+    height: 350px;
+    width: 350px;
+    border-radius: 20px;
+    background-color: #7da4eb;
+    border: 3px solid #344566;
+    color: #344566;
+    font-size: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.options__item-link {
+    text-decoration: none;
+    color: #344566;
+}
+
+@media(max-width: 720px) {
+    .options__item {
+        height: 300px;
+        width: 300px;
+        margin-bottom: 20px;
+    }
+
+    .options {
+        flex-direction: column;
+    }
+}

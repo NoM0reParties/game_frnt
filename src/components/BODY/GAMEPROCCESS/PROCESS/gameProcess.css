@@ -1,0 +1,109 @@
+.gtheme {
+    height: 180px;
+    width: 300px;
+    font-size: 32px;
+    font-weight: 600;
+    overflow-wrap: break-word;
+    background-color: #7da4eb;
+    border-radius: 20px;
+    color: #344566;
+    display: flex;
+    border: 4px solid #344566;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 100px;
+}
+
+.gallery__row {
+    height: 180px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.fresh__question {
+    height: 180px;
+    width: 180px;
+    font-size: 34px;
+    background: none;
+    background-color: white;
+    border: 4px solid #344566;
+    color: #344566;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.transition {
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.change__round {
+    margin-right: auto;
+    margin-left: auto;
+    height: 180px;
+    width: 400px;
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    background: none;
+    border: 4px solid #7da4eb;
+    background-color: #344566;
+    border-radius: 20px;
+}
+
+.players__bar {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: 120px;
+    width: 1590px;
+    height: 50px;
+    border: 4px solid white;
+    background-color: #344566;
+    border-radius: 20px;
+}
+
+.player__board {
+    height: 50px;
+    line-height: 50px;
+    min-width: 200px;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.player__board:not(:last-child) {
+    border-right: 2px solid white;
+}
+
+.show__answers {
+    margin-right: auto;
+    margin-left: auto;
+    height: 80px;
+    width: 400px;
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    background: none;
+    border: 4px solid #7da4eb;
+    background-color: #344566;
+    border-radius: 20px;
+}
+
+.answered__question {
+    height: 180px;
+    width: 180px;
+    font-size: 34px;
+    background: none;
+    background-color: #7da4eb;
+    border: 4px solid #344566;
+    color: #344566;
+    font-weight: 600;
+    border-radius: 20px;
+}

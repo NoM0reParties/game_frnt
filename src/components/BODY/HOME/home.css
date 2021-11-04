@@ -1,0 +1,12 @@
+.home {
+    padding: 0 70px;
+}
+
+.main__header {
+    font-weight: 400;
+    font-size: 66px;
+    font-weight: 600;
+    color: #00aeff;
+    letter-spacing: 4px;
+    margin-bottom: 70px;
+}
