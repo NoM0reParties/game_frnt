@@ -1,12 +1,14 @@
 import './theme.css';
 import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Redirect, useParams, Link } from 'react-router-dom';
 
-const ThemeForm = ({ setCondition, quiz, getThemes }) => {
+const ThemeForm = () => {
     const [title, setTitle] = useState('')
     const [detail, setDetail] = useState('')
 
     const CSRFToken = Cookies.get('csrftoken');
+    const [redirect, setRedirect] = useState(false);
 
     const axios = require('axios');
 
@@ -14,18 +16,19 @@ const ThemeForm = ({ setCondition, quiz, getThemes }) => {
         'X-CSRFToken': CSRFToken
     };
 
+    const params = useParams();
+
     async function FormSend() {
         const payload = {
             "name": title,
-            "quiz": quiz
+            "quiz": params.id
         };
 
         let response = await axios.post("/api/quiz/theme_cr", payload, { headers: myHeaders })
         if (response.data.hasOwnProperty('detail')) {
             setDetail(response.data.detail);
         } else {
-            getThemes(quiz);
-            setCondition('themes');
+            setRedirect(true);
         }
     };
 
@@ -35,9 +38,13 @@ const ThemeForm = ({ setCondition, quiz, getThemes }) => {
         }
     };
 
+    if (redirect) {
+        return <Redirect to={`/constructor/${params.id}/themes`} />
+    }
+
     return (
         <form className="theme__form">
-            <button className="back"></button>
+            <Link to={`/constructor/${params.id}/themes`} className="back"></Link>
             <div className="theme__form-block">
                 <label className="main__form-label" htmlFor="">Название темы</label>
                 <input onChange={handleOnChange} className="theme__form-input" name="name" type="text"></input>

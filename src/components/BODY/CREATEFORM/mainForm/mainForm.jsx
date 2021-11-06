@@ -1,8 +1,9 @@
 import './mainForm.css';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const MainForm = ({ setCondition, setCurrentQuiz  }) => {
+const MainForm = () => {
     const [sections, setSections] = useState([])
     const [section, setSection] = useState(1)
     const [title, setTitle] = useState('')
@@ -22,11 +23,7 @@ const MainForm = ({ setCondition, setCurrentQuiz  }) => {
             "section": section
         };
 
-        await axios.post("/api/quiz/quiz_cr", payload, { headers: myHeaders }).then((response) => {
-            let data = response.data;
-            setCondition('themes');
-            setCurrentQuiz(data.id);
-        });
+        await axios.post("/api/quiz/quiz_cr", payload, { headers: myHeaders })
     }
 
     async function getSections() {
@@ -60,7 +57,7 @@ const MainForm = ({ setCondition, setCurrentQuiz  }) => {
 
     return (
         <form className="main__formcq">
-            <button className="back"></button>
+            <Link to="/constructor/choice" className="back"></Link>
             <div className="main__form-block">
                 <label className="main__form-label" htmlFor="">Название</label>
                 <input onChange={handleOnChange} className="main__form-input" name="title" type="text"></input>

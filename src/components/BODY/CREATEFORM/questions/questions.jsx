@@ -1,15 +1,19 @@
 import './questions.css';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { useParams, Link, Redirect } from 'react-router-dom';
 
-const QuestionForm = ({setCondition, currentTheme, getQuestions, questions}) => {
+const QuestionForm = () => {
     const [type, setType] = useState(1);
     const [text, setText] = useState('');
     const [types, setTypes] = useState([]);
     const [image, setImage] = useState(null);
     const [audio, setAudio] = useState(null);
+    const [redirect, setRedirect] = useState(false);
 
     const CSRFToken = Cookies.get('csrftoken');
+
+    const params = useParams();
 
     const axios = require('axios');
 
@@ -17,49 +21,24 @@ const QuestionForm = ({setCondition, currentTheme, getQuestions, questions}) => 
         'X-CSRFToken': CSRFToken
     }
 
-    const getValues = () => {
-        let currValues = [];
-        questions.map((question) => {
-            console.log(question.value);
-            currValues.push(question.value);
-        });
-
-        return currValues;
-    }
-
     async function onFormSub(e) {
         e.preventDefault();
-        const currValues = getValues();
-        let currValue;
-
-        if (!currValues.includes(100)) {
-            currValue = 100;
-        } else if (!currValues.includes(200)) {
-            currValue = 200;
-        } else if (!currValues.includes(300)) {
-            currValue = 300;
-        } else if (!currValues.includes(400)) {
-            currValue = 400;
-        } else if (!currValues.includes(500)) {
-            currValue = 500;
-        }  
 
         const formData = new FormData();
         formData.append('image',image);
         formData.append('text',text);
         formData.append('type',type);
         formData.append('audio',audio);
-        formData.append('value',currValue);
-        formData.append('theme',currentTheme);
+        formData.append('theme',params.theme);
 
         const myMpHeaders = {
             'X-CSRFToken': CSRFToken,
             'content-type': 'multipart/form-data'
         }
 
-        await axios.post("/api/quiz/question_cr", formData, { headers: myMpHeaders });
-        setCondition('questions');
-        getQuestions(currentTheme);
+        await axios.post("/api/quiz/question_cr", formData, { headers: myMpHeaders }).then(response => {
+            setRedirect(true);
+        });
     }
 
     async function getTypes() {
@@ -113,12 +92,13 @@ const QuestionForm = ({setCondition, currentTheme, getQuestions, questions}) => 
         }
     };
 
+    if (redirect) {
+        return <Redirect to={`/constructor/${params.id}/${params.theme}/questions`} />
+    }
+
     return (
         <form onSubmit={onFormSub} className="question__form">
-            <button className="back" onClick={() => {
-                        getQuestions(currentTheme);
-                        setCondition('questions');
-                    }}></button>
+            <Link to={`/constructor/${params.id}/${params.theme}/questions`} className="back"></Link>
             <div className="question__form-block">
                 <label className="question__form-label" htmlFor="">Текст вопроса</label>
                 <textarea onChange={handleOnChange} className="question__form-input-text" name="text" type="text"></textarea>

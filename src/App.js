@@ -43,7 +43,7 @@ const App = () => {
         <Route exact path="/">
           <Home logged={logged} />
         </Route>
-        <Route path="/create-form">
+        <Route path="/constructor">
           <CreateForm />
         </Route>
         <Route path="/login-form">

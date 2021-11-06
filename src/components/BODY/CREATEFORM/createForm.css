@@ -56,6 +56,9 @@
     color: #fff;
     font-size: 20px;
     border: none;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
     justify-content: space-around;
     cursor: pointer;
 }
@@ -74,8 +77,50 @@
     font-weight: bold;
     font-size: 24px;
     border: 4px solid #344566;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
     justify-content: space-around;
     cursor: pointer;
+    transition: all 0.7s ease-in-out;
+}
+
+.obj__row {
+    position: relative;
+}
+
+.obj__row:hover > .choice__item {
+    width: 550px;
+    transform: translateX(75px);
+}
+
+.obj__row:hover > .theme__item {
+    width: 550px;
+    transform: translateX(75px);
+}
+
+.obj__row:hover > .questions__item {
+    width: 550px;
+    transform: translateX(75px);
+}
+
+.obj__row:hover > .faicon {
+    opacity: 100%;
+    transform: translateX(-75px);
+}
+
+.faicon {
+    opacity: 0%;
+    color: #344566;
+    top: 5px;
+    right: -90px;
+    position: absolute;
+    margin-right: 20px;
+    transition: opacity 0.7s ease-in-out;
+}
+
+.icon__trash {
+    right: -150px;
 }
 
 .theme__block {
@@ -110,6 +155,9 @@
     font-size: 24px;
     font-weight: 600;
     border: none;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
     justify-content: space-around;
     cursor: pointer;
 }
@@ -127,8 +175,12 @@
     font-weight: bold;
     font-size: 28px;
     border: 2px solid #344566;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
     justify-content: space-around;
     cursor: pointer;
+    transition: all 0.7s ease-in-out;
 }
 
 .theme__container {
@@ -190,6 +242,9 @@
     font-size: 24px;
     font-weight: 600;
     border: none;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
     justify-content: space-around;
     cursor: pointer;
 }
@@ -207,8 +262,12 @@
     font-weight: bold;
     font-size: 28px;
     border: 2px solid #344566;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
     justify-content: space-around;
     cursor: pointer;
+    transition: all 0.7s ease-in-out;
 }
 
 .questions__container {
