@@ -203,12 +203,20 @@
     background-color: rgb(246, 85, 73);
 }
 
+.nobody_ans:hover {
+    background-color: rgb(253, 193, 124);
+}
+
 .corr_ans {
     background-color: rgb(8, 170, 22);
 }
 
 .wrong_ans {
     background-color: rgb(175, 15, 4);
+}
+
+.nobody_ans {
+    background-color: rgb(255, 143, 14);
 }
 
 .player__row {

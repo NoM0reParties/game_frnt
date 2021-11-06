@@ -1,16 +1,41 @@
+@font-face {
+  font-family: 'open_sans';
+  src: url('./fonts/IwataMaruGothicW55-B.woff2') format('woff2'), url('./fonts/IwataMaruGothicW55-B.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'open_sans';
+  src: url('./fonts/IwataMaruGothicW55-D.woff2') format('woff2'), url('./fonts/IwataMaruGothicW55-D.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'open_sans';
+  src: url('./fonts/IwataMaruGothicW55-L.woff2') format('woff2'), url('./fonts/IwataMaruGothicW55-L.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'open_sans';
+  src: url('./fonts/IwataMaruGothicW55-M.woff2') format('woff2'), url('./fonts/IwataMaruGothicW55-M.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   background-color: rgb(117, 255, 135);
   background-image: url(./map.jpg);
-  background-size:cover;
+  background-size: cover;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

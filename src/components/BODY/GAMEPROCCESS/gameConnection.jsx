@@ -32,7 +32,7 @@ const GameConnection = () => {
             getPlayers();
         }, 5000)
         return () => clearInterval(updInterval);
-    }, [])
+    })
 
 
     return (

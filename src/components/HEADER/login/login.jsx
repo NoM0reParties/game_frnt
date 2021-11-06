@@ -1,6 +1,5 @@
 import './login.css';
-import { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie'
 
 const Login = ({username, setUsername, logged, setLogged}) => {
@@ -10,7 +9,7 @@ const Login = ({username, setUsername, logged, setLogged}) => {
     const axios = require('axios');
 
     async function sendLogOut() {
-        let res = await axios.post("/api/user/logout", {
+        await axios.post("/api/user/logout", {
             headers: { 'X-CSRFToken': CSRFToken }
         });
         setLogged(false);

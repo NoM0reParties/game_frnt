@@ -10,6 +10,7 @@ const GameProcess = () => {
     const [questions, setQuestions] = useState({});
     const [condition, setCondition] = useState('gallery');
     const [players, setPlayers] = useState([])
+    const [results, setResults] = useState([])
     let params = useParams();
 
     const CSRFToken = Cookies.get('csrftoken');
@@ -23,6 +24,15 @@ const GameProcess = () => {
             { headers: myHeaders }).then((response) => {
                 let data = response.data;
                 setPlayers(data);
+            })
+    };
+
+    async function getResults() {
+        axios.get(`/api/quiz/results_table?quiz_game_id=${params.id}`,
+            { headers: myHeaders }).then((response) => {
+                console.log(response.data)
+                let data = response.data;
+                setResults(data);
             })
     };
 
@@ -57,7 +67,7 @@ const GameProcess = () => {
         } else if (currentRound === 3) {
             return 'Перейти к Супер-Игре'
         } else if (currentRound === 4) {
-            return 'Кажется всё'
+            return 'Посмотреть результаты'
         }
     }
 
@@ -70,7 +80,7 @@ const GameProcess = () => {
     }, [condition])
 
     if (condition === 'final') {
-        <Redirect to="/" />
+        return <Redirect to="/" />
     }
 
     if (condition === 'gallery') {
@@ -89,8 +99,8 @@ const GameProcess = () => {
                             <div className="gtheme" >{theme}</div>
                             {questions[theme].map(question => {
                                 if (question.fresh && currentRound === 4) {
-                                    return <button className="fresh__question" key={question.id} 
-                                        id={question.id} style={{fontSize: 24}}
+                                    return <button className="fresh__question" key={question.id}
+                                        id={question.id} style={{ fontSize: 24 }}
                                         onClick={clickHandler}
                                     >Супер-Игра</button>
                                 } else if (question.fresh) {
@@ -111,16 +121,39 @@ const GameProcess = () => {
         return (
             <div className="question__detail">
                 <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition}
-                game_id={params.id} currentRound={currentRound} />
+                    game_id={params.id} currentRound={currentRound} />
             </div>
         )
-    } else if (condition === 'transition' && currentRound === 5) {
+    } else if (condition === 'results') {
+        return (
+            <div className="gallery">
+                <div className="result__row headline">
+                    <div className="result__name highlight">Имя</div>
+                    <div className="result__score highlight">Счёт</div>
+                    <div className="result__percent highlight">% правильных ответов</div>
+                </div>
+                {results.map(result => {
+                    return (
+                        <div className="result__row" key={result.id}>
+                            <div className="result__name">{result.name}</div>
+                            <div className="result__score">{result.score}</div>
+                            <div className="result__percent">{result.percent}</div>
+                        </div>
+                    )
+                })}
+                <button className="result__score" onClick={() => {
+                    axios.post('/api/quiz/end_game', { game_id: params.id }, { headers: myHeaders });
+                    setCondition('final');
+                }}>Закончить игру</button>
+            </div>
+        )
+    } else if (condition === 'transition' && currentRound === 4) {
         return (
             <div className="transition">
                 <button className="change__round" onClick={() => {
-                    axios.post('/api/quiz/end_game', {game_id: params.id}, { headers: myHeaders });
-                    setCondition('final');
-                }}>Спасибо за игру!</button>
+                    getResults();
+                    setCondition('results');
+                }}>Показать результаты</button>
             </div>
         )
     } else if (condition === 'transition') {

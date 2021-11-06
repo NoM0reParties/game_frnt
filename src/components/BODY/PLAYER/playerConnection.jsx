@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Redirect, useParams } from "react-router"
+import { Redirect } from "react-router"
 import { Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -38,8 +38,7 @@ const PlayerConnection = () => {
 
     useEffect(() => {
         getGames();
-    }, [])
-
+    })
 
     if (connected) {
         return <Redirect to={link} />

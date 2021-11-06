@@ -82,7 +82,7 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
             getReady()
         }, 5000)
         return () => clearInterval(readyInterval)
-    }, [])
+    })
 
     if (!question) {
         return 'Loading...'
@@ -100,7 +100,7 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
                             modalOverlay.classList.add('modal-overlay--visible');
                             document.querySelector('body').classList.add('stop-scroll');
                         }}
-                        data-path="one" src={question.image} />
+                        data-path="one" src={question.image} alt="gallery-pic" />
                     <div class="modal">
                         <div class="modal-overlay">
                             <div class="modal modal--1" data-target="one">
@@ -153,6 +153,10 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
                     }}></button>
                     <button className="ans wrong_ans" onClick={() => {
                         sendWrong();
+                    }}></button>
+                    <button className="ans nobody_ans" onClick={() => {
+                        axios.post('/api/quiz/nobody', { question_id: currentQuestion }, { headers: myHeaders });
+                        setCondition('gallery');
                     }}></button>
                 </div>
             </div>

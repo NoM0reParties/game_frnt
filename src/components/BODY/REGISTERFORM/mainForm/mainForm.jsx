@@ -25,8 +25,7 @@ const MainForm = ({ checkLog }) => {
         }
 
         if (password === password2) {
-            let res = await axios.post("/api/user/register", payload, { headers: myHeaders });
-            let data = res.data;
+            await axios.post("/api/user/register", payload, { headers: myHeaders });
             checkLog();
         } else {
             alert('passes not match')

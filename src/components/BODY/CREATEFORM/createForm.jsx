@@ -78,7 +78,7 @@ const CreateForm = () => {
 
     useEffect(() => {
         getQuizes();
-    }, [])
+    })
 
     const quizDetail = (e) => {
         setCurrentQuiz(e.target.id);
@@ -258,7 +258,6 @@ const CreateForm = () => {
                                 backgroundColor: findThemeColor(theme.round),
                             }
                             return (<button draggable={true} style={btnStyle} id={theme.id} key={theme.id}
-                                onDragOver={(e) => { e.preventDefault() }}
                                 onDragStart={(e) => {
                                     setDragElement(theme.id);
                                 }}
@@ -297,7 +296,6 @@ const CreateForm = () => {
                         return (<button style={btnStyle} className="questions__item"
                             id={question.id} key={question.id}
                             draggable={true}
-                            onDragOver={(e) => { e.preventDefault() }}
                             onDragStart={(e) => {
                                 setDragQuestion(question.id);
                             }}
@@ -328,14 +326,14 @@ const CreateForm = () => {
         return (
             <div className="question__detail">
                 <h1 className="form__header">Предпросмотр вашего вопроса</h1>
-                <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition}/>
+                <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition} />
             </div>
         )
     } else if (condition === 'superQuestion') {
         return (
             <div className="question__detail">
                 <h1 className="form__header">Предпросмотр вашего вопроса</h1>
-                <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition}/>
+                <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition} />
             </div>
         )
     } else {
