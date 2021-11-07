@@ -7,6 +7,8 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 const QuestionsList = ({ myHeaders, round }) => {
     const [questions, setQuestions] = useState([])
     const [dragQuestion, setDragQuestion] = useState(0)
+    const [confirmation, setConfirmation] = useState(false)
+    const [delQuestion, setDelQuestion] = useState(null)
 
     const axios = require('axios');
 
@@ -42,33 +44,64 @@ const QuestionsList = ({ myHeaders, round }) => {
         getQuestions(params.theme);
     }, [])
 
-    return (
-        <div className="questions__block">
-            <h1 className="questions__header">Конструктор квиза</h1>
-            <div className="questions__list">
-                {questions.map(question => {
-                    return (
-                        <div className="obj__row">
-                            <Link className="questions__item"
-                                id={question.id} key={question.id}
-                                draggable={true}
-                                onDragStart={(e) => {
-                                    setDragQuestion(question.id);
-                                }}
-                                onDragEnd={(e) => { e.preventDefault() }}
-                                onDragOver={(e) => { e.preventDefault() }} onDrop={(e) => changeValue(e)}
-                            >{question.text.slice(0, 10)} - {question.value}</Link>
-                            <FontAwesomeIcon className="faicon icon__edit" icon={faEdit} size="3x" />
-                            <FontAwesomeIcon className="faicon icon__trash" icon={faTrash} size="3x" />
-                        </div>
-                    )
-                }
-                )}
-                <Link className="back" to={`/constructor/${params.id}/themes`}></Link>
-                {questionButton()}
+    if (confirmation) {
+        return (
+            <div className="сhoice__block">
+                <h1 className="form__header">Удаление</h1>
+                <div className="choice__list">
+                    <p className="delete__text">Вы действительно хотите удалить этот вопрос?</p>
+                    <div className="delete__confirmation">
+                        <button className="choice__btn"
+                            onClick={() => {
+                                axios.delete(`/api/quiz/update_question/${delQuestion}`, { headers: myHeaders }).then(response => {
+                                    getQuestions(params.theme);
+                                    setConfirmation(false);
+                                })
+                            }}>Да</button>
+                        <button className="choice__btn" onClick={() => {
+                            setConfirmation(false);
+                        }}>Нет</button>
+                    </div>
+                </div>
+            </div >
+        )
+    } else {
+        return (
+            <div className="questions__block">
+                <h1 className="questions__header">Конструктор квиза</h1>
+                <div className="questions__list">
+                    {questions.map(question => {
+                        return (
+                            <div className="obj__row">
+                                <Link
+                                    to={`/constructor/${params.id}/${params.theme}/${question.id}/detail`}
+                                    className="questions__item"
+                                    id={question.id} key={question.id}
+                                    draggable={true}
+                                    onDragStart={(e) => {
+                                        setDragQuestion(question.id);
+                                    }}
+                                    onDragEnd={(e) => { e.preventDefault() }}
+                                    onDragOver={(e) => { e.preventDefault() }} onDrop={(e) => changeValue(e)}
+                                >{question.text.slice(0, 10)} - {question.value}</Link>
+                                <Link className="upd__link icon__edit" to={`/constructor/${params.id}/${params.theme}/${question.id}/update`}>
+                                    <FontAwesomeIcon className="faicon" icon={faEdit} size="3x" />
+                                </Link>
+                                <FontAwesomeIcon className="upd__link faicon icon__trash" icon={faTrash} size="3x"
+                                    onClick={() => {
+                                        setDelQuestion(question.id);
+                                        setConfirmation(true);
+                                    }} />
+                            </div>
+                        )
+                    }
+                    )}
+                    <Link className="back" to={`/constructor/${params.id}/themes`}></Link>
+                    {questionButton()}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default QuestionsList;

@@ -1,20 +1,23 @@
 import './mainForm.css';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 
-const MainForm = () => {
+const UpdateQuiz = ({myHeaders}) => {
     const [sections, setSections] = useState([])
-    const [section, setSection] = useState(1)
+    const [section, setSection] = useState(0)
     const [title, setTitle] = useState('')
     const [redirect, setRedirect] = useState(false)
 
-    const CSRFToken = Cookies.get('csrftoken');
-
     const axios = require('axios');
 
-    const myHeaders = {
-        'X-CSRFToken': CSRFToken
+    const params = useParams();
+
+    const getDetails = () => {
+        axios.get(`/api/quiz/quiz_upd_detail?quiz_id=${params.id}`, { headers: myHeaders }).then(response => {
+            setSection(response.data.section);
+            setTitle(response.data.title)
+        })
     }
 
     async function FormSend() {
@@ -24,7 +27,7 @@ const MainForm = () => {
             "section": section
         };
 
-        await axios.post("/api/quiz/quiz_cr", payload, { headers: myHeaders }).then(response => {
+        await axios.put(`/api/quiz/update_quiz/${params.id}`, payload, { headers: myHeaders }).then(response => {
             setRedirect(true)
         })
     }
@@ -33,7 +36,6 @@ const MainForm = () => {
         axios.get("/api/quiz/sections", { headers: myHeaders }).then((response) => {
             let data = response.data;
             setSections(data.sections)
-            setTitle(data.sections[0][1])
         })
     };
 
@@ -45,13 +47,14 @@ const MainForm = () => {
                 if (sec[1] === e.target.value) {
                     setSection(sec[0]);
                     return null;
-                } 
+                }
             })
         }
     };
 
     useEffect(() => {
-        getSections()
+        getSections();
+        getDetails();
     }, [])
 
     if (!sections) {
@@ -67,19 +70,27 @@ const MainForm = () => {
             <Link to="/constructor/choice" className="back"></Link>
             <div className="main__form-block">
                 <label className="main__form-label" htmlFor="">Название</label>
-                <input onChange={handleOnChange} className="main__form-input" name="title" type="text"></input>
+                <input onChange={handleOnChange} value={title} className="main__form-input" name="title" type="text"></input>
             </div>
             <div className="main__form-block">
                 <label className="main__form-label" htmlFor="">Раздел</label>
-                <select onChange={handleOnChange} className="main__form-input" name="section">{sections.map(section => {
-                    return (<option key={section[0]}>{section[1]}</option>)
+                <select onChange={handleOnChange} className="main__form-input" name="section">{sections.map(sec => {
+                    if (sec[0] === section) {
+                        return (
+                            <option key={sec[0]} selected>{sec[1]}</option>
+                        )
+                    } else {
+                        return (
+                            <option key={sec[0]}>{sec[1]}</option>
+                        )
+                    }
                 }
                 )}</select>
             </div>
-            <button className="main__form-btn" type="button" onClick={FormSend}>Создать</button>
+            <button className="main__form-btn" type="button" onClick={FormSend}>Сохранить</button>
         </form>
     )
 };
 
 
-export default MainForm;
+export default UpdateQuiz;

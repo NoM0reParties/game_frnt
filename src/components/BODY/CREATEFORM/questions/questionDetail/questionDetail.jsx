@@ -1,20 +1,23 @@
 import './questionDetail.css';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const QuestionDetail = ({ currentQuestion, setCondition }) => {
+const QuestionDetail = () => {
     const [question, setQuestion] = useState({});
 
     const CSRFToken = Cookies.get('csrftoken');
 
     const axios = require('axios');
+    const params = useParams();
 
     const myHeaders = {
         'X-CSRFToken': CSRFToken
     }
 
     async function getQuestion() {
-        axios.get(`/api/quiz/question_detail?question_id=${currentQuestion}`, { headers: myHeaders }).then((response) => {
+        axios.get(`/api/quiz/question_detail?question_id=${params.qid}`, { headers: myHeaders }).then((response) => {
             setQuestion(response.data)
         })
     };
@@ -77,9 +80,7 @@ const QuestionDetail = ({ currentQuestion, setCondition }) => {
 
     return (
         <div className="the__question">
-            <button className="qback" onClick={() => {
-                setCondition('questions');
-            }}></button>
+            <Link to={`/constructor/${params.id}/${params.theme}/questions`} className="qback"></Link>
             <p className="the__question-text">{question.text}</p>
             {putMedia()}
         </div>

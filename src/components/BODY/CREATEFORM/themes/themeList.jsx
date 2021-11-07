@@ -7,6 +7,9 @@ import { faBookmark, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 const ThemesList = ({ myHeaders, setRound }) => {
     const [dragElement, setDragElement] = useState(0)
     const [themes, setThemes] = useState([])
+    const [confirmation, setConfirmation] = useState(false)
+    const [delTheme, setDelTheme] = useState(null)
+    const [delName, setDelName] = useState('')
 
     const params = useParams();
 
@@ -114,54 +117,84 @@ const ThemesList = ({ myHeaders, setRound }) => {
         getThemes(params.id);
     }, []);
 
-    return (
-        <div className="theme__block">
-            <h1 className="theme__header">Конструктор квиза</h1>
-            <div className="theme__container">
-                <div className="theme__list">
-                    <Link to="/constructor/choice" className="back" ></Link>
-                    {themes.map(theme => {
-                        const rowColor = findThemeColor(theme.round)
-                        const btnStyle = {
-                            color: rowColor,
+    if (confirmation) {
+        return (
+            <div className="сhoice__block">
+                <h1 className="form__header">Удаление</h1>
+                <div className="choice__list">
+                    <p className="delete__text">Вы действительно хотите удалить {delName}?</p>
+                    <div className="delete__confirmation">
+                        <button className="choice__btn"
+                            onClick={() => {
+                                axios.delete(`/api/quiz/update_theme/${delTheme}`, { headers: myHeaders }).then(response => {
+                                    getThemes(params.id);
+                                    setConfirmation(false);
+                                })
+                            }}>Да</button>
+                        <button className="choice__btn" onClick={() => {
+                            setConfirmation(false);
+                        }}>Нет</button>
+                    </div>
+                </div>
+            </div >
+        )
+    } else {
+        return (
+            <div className="theme__block">
+                <h1 className="theme__header">Конструктор квиза</h1>
+                <div className="theme__container">
+                    <div className="theme__list">
+                        <Link to="/constructor/choice" className="back" ></Link>
+                        {themes.map(theme => {
+                            const rowColor = findThemeColor(theme.round)
+                            const btnStyle = {
+                                color: rowColor,
+                            }
+                            return (
+                                <div className="obj__row" key={theme.id}>
+                                    <FontAwesomeIcon style={btnStyle} className="upd__link faicon icon__round" icon={faBookmark} size="2x" />
+                                    <Link draggable={true} id={theme.id}
+                                        to={`/constructor/${params.id}/${theme.id}/questions`}
+                                        onDragStart={(e) => {
+                                            setDragElement(theme.id);
+                                        }}
+                                        onDragEnd={(e) => { e.preventDefault() }}
+                                        onDragOver={(e) => {
+                                            e.preventDefault();
+                                        }}
+                                        onDrop={(e) => changeThemeOrder(e)}
+                                        onMouseOver={(e) => {
+                                            e.target.style.color = rowColor
+                                        }}
+                                        onMouseOut={(e) => {
+                                            e.target.style.color = "#252525"
+                                        }}
+                                        className="theme__item" onClick={themeDetail}>{theme.name}</Link>
+                                    <Link className="upd__link icon__edit" to={`/constructor/${params.id}/${theme.id}/update`}>
+                                        <FontAwesomeIcon className="faicon" icon={faEdit} size="2x" />
+                                    </Link>
+                                    <FontAwesomeIcon className="upd__link faicon icon__trash" icon={faTrash} size="2x"
+                                    onClick={() => {
+                                        setDelName(theme.name);
+                                        setDelTheme(theme.id);
+                                        setConfirmation(true);
+                                    }}/>
+                                </div>
+                            )
                         }
-                        return (
-                            <div className="obj__row"  key={theme.id}>
-                                <FontAwesomeIcon style={btnStyle} className="faicon icon__round" icon={faBookmark} size="2x" />
-                                <Link draggable={true} id={theme.id}
-                                    to={`/constructor/${params.id}/${theme.id}/questions`}
-                                    onDragStart={(e) => {
-                                        setDragElement(theme.id);
-                                    }}
-                                    onDragEnd={(e) => { e.preventDefault() }}
-                                    onDragOver={(e) => {
-                                        e.preventDefault();
-                                    }}
-                                    onDrop={(e) => changeThemeOrder(e)}
-                                    onMouseOver={(e) => {
-                                        e.target.style.color = rowColor
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.target.style.color = "#252525"
-                                    }}
-                                    className="theme__item" onClick={themeDetail}>{theme.name}</Link>
-                                <FontAwesomeIcon className="faicon icon__edit" icon={faEdit} size="2x" />
-                                <FontAwesomeIcon className="faicon icon__trash" icon={faTrash} size="2x" />
-                            </div>
-                        )
-                    }
-                    )}
-                    {addTheme()}
+                        )}
+                        {addTheme()}
+                    </div>
+                    <div className="theme__roundlist">
+                        {roundSpot(1)}
+                        {roundSpot(2)}
+                        {roundSpot(3)}
+                        {roundSpot(4)}
+                    </div>
                 </div>
-                <div className="theme__roundlist">
-                    {roundSpot(1)}
-                    {roundSpot(2)}
-                    {roundSpot(3)}
-                    {roundSpot(4)}
-                </div>
-            </div>
-        </div >
-    )
+            </div >
+        )
+    }
 }
 
 export default ThemesList
