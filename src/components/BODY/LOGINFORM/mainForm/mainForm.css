@@ -1,11 +1,18 @@
 .main__form-btn {
     width: 200px;
     height: 70px;
-    background-color: #344566;
+    background-color: #ffffff;
     border-radius: 15px;
-    color: #fff;
-    font-size: 20px;
+    color: #252525;
+    font-size: 26px;
     border: none;
     justify-content: space-around;
     cursor: pointer;
+    transition: font-size 0.7s ease-in-out;
+    outline: none;
+}
+
+
+.main__form-btn:hover {
+    font-size: 28px;
 }

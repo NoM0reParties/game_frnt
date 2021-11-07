@@ -37,10 +37,7 @@ const GameList = () => {
                 <div className="choice__list">
                     <Link className="back" to="/"></Link>
                     {quizes.map(quiz => {
-                        const btnStyle = {
-                            backgroundColor: quiz.color,
-                        }
-                        return (<button style={btnStyle} id={quiz.id} key={quiz.id}
+                        return (<button id={quiz.id} key={quiz.id}
                             onClick={(e)=>{
                                 setChosenQuiz(e.target.id)
                             }} className="choice__item">{quiz.name}</button>)

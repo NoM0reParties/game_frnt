@@ -35,13 +35,10 @@ const Choice = ({ myHeaders }) => {
             <div className="choice__list">
                 <Link className="back" to="/"></Link>
                 {quizes.map(quiz => {
-                    const btnStyle = {
-                        backgroundColor: quiz.color,
-                    }
                     const to = `/constructor/${quiz.id}/themes`
                     return (
                         <div className="obj__row">
-                            <Link to={to} style={btnStyle} id={quiz.id} key={quiz.id}
+                            <Link to={to} id={quiz.id} key={quiz.id}
                                 className="choice__item">{quiz.name}</Link>
                             <FontAwesomeIcon className="faicon icon__edit" icon={faEdit} size="3x" />
                             <FontAwesomeIcon className="faicon icon__trash" icon={faTrash} size="3x" />

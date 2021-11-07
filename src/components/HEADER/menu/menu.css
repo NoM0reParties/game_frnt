@@ -7,7 +7,7 @@
 }
 
 .menu__item {
-    color: #1f2b44;
+    color: #ffffff;
     font-size: 24px;
     margin-right: 150px;
     cursor: pointer;
@@ -19,7 +19,7 @@
 
 @media(max-width: 720px) {
     .menu__item {
-        color: #1f2b44;
+        color: #ffffff;
         font-size: 24px;
         margin-right: 20px;
         cursor: pointer;

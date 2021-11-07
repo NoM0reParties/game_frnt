@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBookmark, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 const ThemesList = ({ myHeaders, setRound }) => {
     const [dragElement, setDragElement] = useState(0)
@@ -121,18 +121,29 @@ const ThemesList = ({ myHeaders, setRound }) => {
                 <div className="theme__list">
                     <Link to="/constructor/choice" className="back" ></Link>
                     {themes.map(theme => {
+                        const rowColor = findThemeColor(theme.round)
                         const btnStyle = {
-                            backgroundColor: findThemeColor(theme.round),
+                            color: rowColor,
                         }
                         return (
-                            <div className="obj__row">
-                                <Link draggable={true} style={btnStyle} id={theme.id} key={theme.id}
+                            <div className="obj__row"  key={theme.id}>
+                                <FontAwesomeIcon style={btnStyle} className="faicon icon__round" icon={faBookmark} size="2x" />
+                                <Link draggable={true} id={theme.id}
                                     to={`/constructor/${params.id}/${theme.id}/questions`}
                                     onDragStart={(e) => {
                                         setDragElement(theme.id);
                                     }}
                                     onDragEnd={(e) => { e.preventDefault() }}
-                                    onDragOver={(e) => { e.preventDefault() }} onDrop={(e) => changeThemeOrder(e)}
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                    onDrop={(e) => changeThemeOrder(e)}
+                                    onMouseOver={(e) => {
+                                        e.target.style.color = rowColor
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.target.style.color = "#252525"
+                                    }}
                                     className="theme__item" onClick={themeDetail}>{theme.name}</Link>
                                 <FontAwesomeIcon className="faicon icon__edit" icon={faEdit} size="2x" />
                                 <FontAwesomeIcon className="faicon icon__trash" icon={faTrash} size="2x" />
@@ -149,7 +160,7 @@ const ThemesList = ({ myHeaders, setRound }) => {
                     {roundSpot(4)}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

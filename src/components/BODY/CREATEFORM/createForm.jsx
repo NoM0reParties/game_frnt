@@ -40,7 +40,7 @@ const CreateForm = () => {
             </Route>
             <Route path="/constructor/:id/theme-create">
                 <div className="create">
-                    <h1 className="form__header">Создай Квиз</h1>
+                    <h1 className="form__header">Создай тему</h1>
                     <div className="create__form">
                         <ThemeForm />
                     </div>

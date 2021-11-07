@@ -12,20 +12,6 @@ const QuestionsList = ({ myHeaders, round }) => {
 
     const params = useParams();
 
-    const findQuestionColor = (value) => {
-        if (value === 100) {
-            return { backgroundColor: '#b4ffa1', color: 'black' }
-        } else if (value === 200) {
-            return { backgroundColor: '#72d35a', color: '#191d18' }
-        } else if (value === 300) {
-            return { backgroundColor: '#58ad43', color: '#293625' }
-        } else if (value === 400) {
-            return { backgroundColor: '#377727', color: '#a9fa95' }
-        } else if (value === 500) {
-            return { backgroundColor: '#215813', color: '#d1f6c7' }
-        }
-    };
-
     const changeValue = (e) => {
         e.preventDefault();
         const payload = {
@@ -61,10 +47,9 @@ const QuestionsList = ({ myHeaders, round }) => {
             <h1 className="questions__header">Конструктор квиза</h1>
             <div className="questions__list">
                 {questions.map(question => {
-                    const btnStyle = findQuestionColor(question.value)
                     return (
                         <div className="obj__row">
-                            <Link style={btnStyle} className="questions__item"
+                            <Link className="questions__item"
                                 id={question.id} key={question.id}
                                 draggable={true}
                                 onDragStart={(e) => {

@@ -6,12 +6,12 @@
     text-decoration: none;
     border: none;
     font-size: 16px;
-    color: #1f2b44;
+    color: #ffffff;
     background: none;
     padding: 0 20px ;
     cursor: pointer;
 }
 
 .header__login-btn:not(:last-child) {
-    border-right: 2px solid black;
+    border-right: 2px solid rgb(255, 255, 255);
 }

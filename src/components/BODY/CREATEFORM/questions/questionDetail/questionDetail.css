@@ -227,7 +227,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #344566;
+    background-color: #252525;
     border-radius: 25px;
 }
 
@@ -278,7 +278,7 @@
     color: white;
     text-align: center;
     background: none;
-    background-color: #344566;
+    background-color: #252525;
     border: 2px solid white;
     border-radius: 25px;
     transition: background-color 1s ease-in-out;
@@ -294,7 +294,7 @@
     color: white;
     display: block;
     background: none;
-    background-color: #344566;
+    background-color: #252525;
     border: 2px solid white;
     border-radius: 25px;
     transition: background-color 1s ease-in-out;

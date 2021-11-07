@@ -4,12 +4,8 @@
     width: 700px;
     padding: 35px;
     flex-direction: column;
-    background-color: hsl(219, 73%, 71%);
+    background-color: #252525;
     border-radius: 20px;
-    border-bottom: 7px solid #344566;
-    border-right: 4px solid #344566;
-    border-left: 4px solid #344566;
-    border-top: 2px solid #344566;
     justify-content: space-around;
     align-items: center;
 }
@@ -20,8 +16,10 @@
     border-radius: 15px;
     padding: 0 20px;
     font-size: 30px;
-    border: 3px solid #344566;
-    color: #344566;
+    border: 3px solid #ffffff;
+    color: #ffffff;
+    background-color: #252525;
+    outline: none;
 }
 
 .main__form-block {
@@ -34,6 +32,7 @@
 .main__form-label {
     line-height: 30px;
     font-size: 26px;
+    color: #FFFFFF;
 }
 
 @media(max-width: 620px) {

@@ -8,10 +8,18 @@
     margin-bottom: 50px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    background-color: #7da4eb;
-    border-bottom: 7px solid #344566;
-    border-right: 4px solid #344566;
-    border-left: 4px solid #344566;
+    background-color: #252525;
+}
+
+.theme__header {
+    padding: 20px;
+    font-weight: 400;
+    font-size: 60px;
+    background-color: #252525ad;
+    color: #fff;
+    letter-spacing: 4px;
+    margin-bottom: 70px;
+    border-radius: 20px;
 }
 
 @media(max-width: 720px) {
