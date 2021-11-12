@@ -28,6 +28,9 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
         }
 
         axios.post("/api/quiz/corr_answer", payload, { headers: myHeaders }).then((response) => {
+            gameSocket.send(JSON.stringify({
+                'message': "update"
+            }))
             setCondition('gallery')
         })
     };
@@ -154,6 +157,9 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
                         sendWrong();
                     }}></button>
                     <button className="ans nobody_ans" onClick={() => {
+                        gameSocket.send(JSON.stringify({
+                            'message': "update"
+                        }))
                         axios.post('/api/quiz/nobody', { question_id: currentQuestion }, { headers: myHeaders });
                         setCondition('gallery');
                     }}></button>

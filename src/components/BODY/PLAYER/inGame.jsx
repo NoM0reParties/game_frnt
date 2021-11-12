@@ -15,6 +15,7 @@ const InGame = () => {
     const [bet, setBet] = useState(0);
     const [answer, setAnswer] = useState('');
     const [responder, setResponder] = useState('');
+    const [attemptUsed, setAttemptUsed] = useState(false);
 
     let params = useParams();
 
@@ -31,8 +32,15 @@ const InGame = () => {
             setResponder(data.username);
             setCondition('ready');
         } else if (data.message === 'unlock') {
-            checkScore()
-            setCondition('button')
+            setResponder('');
+            checkScore();
+            if (!attemptUsed) {
+                setCondition('button');
+            }     
+        } else if (data.message === 'update') {
+            setAttemptUsed(false);
+            checkScore();
+            setCondition('ready');   
         }
     }
 
@@ -41,6 +49,7 @@ const InGame = () => {
     }, [])
 
     async function sendReady() {
+        setAttemptUsed(true);
         gameSocket.send(JSON.stringify({
             'message': "ready"
         }))
@@ -108,13 +117,21 @@ const InGame = () => {
         }
     }
 
+    const makeMessage = () => {
+        if (responder) {
+            return 'Отвечает ' + responder
+        } else {
+            return 'Ждите, пока появится кнопка'
+        }
+    }
+
     if (condition === 'ready') {
         return (
             <div className="ready__block">
                 <div className="ready__info">
                     {scoreDraw()}
                 </div>
-                <p className="ready_notion">Отвечает {responder}</p>
+                <p className="ready_notion">{makeMessage()}</p>
             </div>
         )
     } else if (condition === 'button') {
