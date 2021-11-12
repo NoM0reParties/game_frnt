@@ -5,9 +5,10 @@ import Cookies from 'js-cookie';
 
 const GameConnection = () => {
     const [players, setPlayers] = useState([]);
+    const [room, setRoom] = useState('');
     let params = useParams();
 
-    const link = `/game-proccess/${params.id}`
+    const link = `/game-proccess/${params.id}?room=${room}`
     const CSRFToken = Cookies.get('csrftoken');
 
     const axios = require('axios');
@@ -26,8 +27,15 @@ const GameConnection = () => {
         })
     };
 
+    async function getRoom() {
+        axios.get(`/api/quiz/room?role=creator`, { headers: myHeaders }).then((response) => {
+            let data = response.data;
+            setRoom(data.room)
+        })
+    };
 
     useEffect(() => {
+        getRoom();
         const updInterval = setInterval(() => {
             getPlayers();
         }, 5000)

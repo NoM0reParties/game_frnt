@@ -3,11 +3,18 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Cookies from 'js-cookie';
 
+const room = window.location.search.split('=')
+
+const gameSocket = new WebSocket(
+    'ws://' + window.location.host  + '/ws/game/' + room[1] + '/'
+);
+
 const InGame = () => {
-    const [condition, setCondition] = useState('button');
+    const [condition, setCondition] = useState('ready');
     const [score, setScore] = useState(0);
     const [bet, setBet] = useState(0);
     const [answer, setAnswer] = useState('');
+    const [responder, setResponder] = useState('');
 
     let params = useParams();
 
@@ -17,16 +24,32 @@ const InGame = () => {
         'X-CSRFToken': CSRFToken
     }
 
-    async function sendReady() {
-        axios.post(`/api/quiz/player_ready`, { headers: myHeaders }).then((response) => {
+    gameSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        console.log(data)
+        if (data.message === 'block') {
+            setResponder(data.username);
             setCondition('ready');
-        })
+        } else if (data.message === 'unlock') {
+            checkScore()
+            setCondition('button')
+        }
+    }
+
+    useEffect(() => {
+        checkScore()
+    }, [])
+
+    async function sendReady() {
+        gameSocket.send(JSON.stringify({
+            'message': "ready"
+        }))
     };
 
     async function checkScore() {
         axios.get(`/api/quiz/player_score?quiz_game_id=${params.id}`, { headers: myHeaders }).then((response) => {
             setScore(response.data.score);
-            if (response.data.round === 4 && ['ready', 'button'].includes(condition) ) {
+            if (response.data.round === 4 && ['ready', 'button'].includes(condition)) {
                 setCondition('superbet')
             }
         })
@@ -85,21 +108,13 @@ const InGame = () => {
         }
     }
 
-    useEffect(() => {
-        checkScore()
-    })
-
     if (condition === 'ready') {
         return (
             <div className="ready__block">
                 <div className="ready__info">
                     {scoreDraw()}
-                    <button className="ready__refresh" onClick={() => {
-                        setCondition('button')
-                        checkScore();
-                    }}>Обновить</button>
                 </div>
-                <p className="ready_notion">Вы нажали кнопку. Ждите.</p>
+                <p className="ready_notion">Отвечает {responder}</p>
             </div>
         )
     } else if (condition === 'button') {
@@ -107,23 +122,15 @@ const InGame = () => {
             <div className="ready__block">
                 <div className="ready__info">
                     {scoreDraw()}
-                    <button className="ready__refresh" onClick={() => {
-                        setCondition('button')
-                        checkScore();
-                    }}>Обновить</button>
                 </div>
                 <button className="ready__button" onClick={sendReady}>ЗНАЮ!</button>
             </div>
         )
     } else if (condition === 'superbet') {
         return (
-            <form className="main__form">
+            <form className="main__Sockform">
                 <div className="ready__info">
                     {scoreDraw()}
-                    <button className="ready__refresh" onClick={() => {
-                        setCondition('button')
-                        checkScore();
-                    }}>Обновить</button>
                 </div>
                 <div className="main__form-block">
                     <label className="main__form-label" htmlFor="">Ставка</label>
@@ -137,10 +144,6 @@ const InGame = () => {
             <form className="main__form">
                 <div className="ready__info">
                     {scoreDraw()}
-                    <button className="ready__refresh" onClick={() => {
-                        setCondition('button')
-                        checkScore();
-                    }}>Обновить</button>
                 </div>
                 <div className="main__form-block">
                     <label className="main__form-label" htmlFor="">Ваш Ответ</label>
@@ -154,9 +157,6 @@ const InGame = () => {
             <div className="ready__block">
                 <div className="ready__info">
                     {scoreDraw()}
-                    <button className="ready__refresh" onClick={() => {
-                        checkScore();
-                    }}>Обновить</button>
                 </div>
                 <p className="ready_notion">Спасибо за игру!</p>
             </div>

@@ -12,11 +12,11 @@
     font-size: 32px;
     font-weight: 600;
     overflow-wrap: break-word;
-    background-color: #7da4eb;
+    background-color: #fff;
     border-radius: 20px;
-    color: #344566;
+    color: #252525;
     display: flex;
-    border: 4px solid #344566;
+    border: 4px solid #252525;
     justify-content: space-around;
     align-items: center;
     margin-right: 100px;
@@ -36,9 +36,9 @@
     width: 150px;
     font-size: 34px;
     background: none;
-    background-color: white;
-    border: 4px solid #344566;
-    color: #344566;
+    background-color: #252525;
+    border: 4px solid #fff;
+    color: #fff;
     font-weight: 600;
     border-radius: 20px;
 }
@@ -74,7 +74,7 @@
     width: 1590px;
     height: 50px;
     border: 4px solid white;
-    background-color: #344566;
+    background-color: #252525;
     border-radius: 20px;
 }
 
@@ -111,8 +111,8 @@
     width: 150px;
     font-size: 34px;
     background: none;
-    background-color: #7da4eb;
-    border: 4px solid #344566;
+    background-color: #252525;
+    border: 4px solid #fd7405;
     color: #344566;
     font-weight: 600;
     border-radius: 20px;

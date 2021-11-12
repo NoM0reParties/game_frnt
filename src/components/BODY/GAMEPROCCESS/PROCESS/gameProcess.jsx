@@ -4,6 +4,18 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import QuestionDetail from './questionDetail';
 
+const CSRFToken = Cookies.get('csrftoken');
+const axios = require('axios');
+const myHeaders = {
+    'X-CSRFToken': CSRFToken
+}
+
+const room = window.location.search.split('=')
+
+const gameSocket = new WebSocket(
+    'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
+);
+
 const GameProcess = () => {
     const [currentRound, setCurrentRound] = useState(1);
     const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -56,6 +68,9 @@ const GameProcess = () => {
 
     const clickHandler = (e) => {
         setCurrentQuestion(e.target.id)
+        gameSocket.send(JSON.stringify({
+            'message': "unlock"
+        }))
         setCondition('question');
     }
 
@@ -121,7 +136,7 @@ const GameProcess = () => {
         return (
             <div className="question__detail">
                 <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition}
-                    game_id={params.id} currentRound={currentRound} />
+                    game_id={params.id} currentRound={currentRound} gameSocket={gameSocket} />
             </div>
         )
     } else if (condition === 'results') {

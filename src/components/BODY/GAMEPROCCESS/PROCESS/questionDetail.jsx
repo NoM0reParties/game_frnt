@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 
-const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }) => {
+const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, gameSocket }) => {
     const [question, setQuestion] = useState({});
     const [playerReady, setPlayerReady] = useState({});
     const [answers, setAnswers] = useState([])
@@ -17,12 +17,6 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
     async function getQuestion() {
         axios.get(`/api/quiz/ig_question_detail?question_id=${currentQuestion}&game_id=${game_id}`, { headers: myHeaders }).then((response) => {
             setQuestion(response.data)
-        })
-    };
-
-    async function getReady() {
-        axios.get(`/api/quiz/check_ready_players?&quiz_game_id=${game_id}`, { headers: myHeaders }).then((response) => {
-            setPlayerReady(response.data)
         })
     };
 
@@ -46,11 +40,10 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
         }
 
         axios.post("/api/quiz/wrong_answer", payload, { headers: myHeaders }).then((response) => {
-            if (response.data.hasOwnProperty('new')) {
-                setPlayerReady(response.data.new)
-            } else {
-                setPlayerReady({})
-            }
+            setPlayerReady({});
+            gameSocket.send(JSON.stringify({
+                'message': "unlock"
+            }))
         })
     };
 
@@ -76,13 +69,19 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
         })
     }
 
+    gameSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        console.log(data)
+        if (data.message === 'block') {
+            setPlayerReady({ id: data.user_id, name: data.username });
+        } else if (data.message === 'unlock') {
+
+        }
+    }
+
     useEffect(() => {
         getQuestion();
-        const readyInterval = setInterval(() => {
-            getReady()
-        }, 5000)
-        return () => clearInterval(readyInterval)
-    })
+    }, [])
 
     if (!question) {
         return 'Loading...'
@@ -92,7 +91,7 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
         if (question.hasOwnProperty('image')) {
             return (
                 <div className="image__container">
-                    <img class="question__image"
+                    <img className="question__image"
                         onClick={(e) => {
                             let path = e.currentTarget.getAttribute('data-path');
                             const modalOverlay = document.querySelector('.modal-overlay');
@@ -101,17 +100,17 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound }
                             document.querySelector('body').classList.add('stop-scroll');
                         }}
                         data-path="one" src={question.image} alt="gallery-pic" />
-                    <div class="modal">
-                        <div class="modal-overlay">
-                            <div class="modal modal--1" data-target="one">
-                                <button class="modal-close"
+                    <div className="modal">
+                        <div className="modal-overlay">
+                            <div className="modal modal--1" data-target="one">
+                                <button className="modal-close"
                                     onClick={(el) => {
                                         const modalOverlay = document.querySelector('.modal-overlay');
                                         modalOverlay.classList.remove('modal-overlay--visible');
                                         document.querySelector('.modal--visible').classList.remove('modal--visible')
                                         document.querySelector('body').classList.remove('stop-scroll');
                                     }}></button>
-                                <img class="modal-picture" src={question.image} alt="gallery-pic" />
+                                <img className="modal-picture" src={question.image} alt="gallery-pic" />
                             </div>
                         </div>
                     </div>

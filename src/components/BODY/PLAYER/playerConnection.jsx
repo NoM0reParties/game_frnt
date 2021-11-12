@@ -25,20 +25,20 @@ const PlayerConnection = () => {
         })
     };
 
-    async function connectToGame(game_id) {
+    async function connectToGame(game_id, room) {
         const payload = {
             game_id: game_id
         }
 
         axios.post(`/api/quiz/connect`, payload, { headers: myHeaders }).then((response) => {
-            setLink(`/player-proccess/${game_id}`);
+            setLink(`/player-proccess/${game_id}?room=${room}`);
             setConnected(true);
         })
     };
 
     useEffect(() => {
         getGames();
-    })
+    }, [])
 
     if (connected) {
         return <Redirect to={link} />
@@ -51,16 +51,10 @@ const PlayerConnection = () => {
                     {games.map(game => {
                         return (<button id={game.id} key={game.id}
                             onClick={(e) => {
-                                connectToGame(e.target.id)
+                                connectToGame(e.target.id, game.room)
                             }} className="choice__item">{game.name}</button>)
                     }
                     )}
-                    <Link className="choice__btn" to={link}
-                    style={{textDecoration: "none",
-                    display: "flex",
-                    alignItems: "center"}}
-                    onClick={() => {
-                    }}>Начать игру</Link>
                 </ul>
             </div>
         )

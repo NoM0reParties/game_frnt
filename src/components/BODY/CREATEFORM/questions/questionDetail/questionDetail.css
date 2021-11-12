@@ -3,7 +3,7 @@
     max-width: 1600px;
     font-size: 36px;
     font-weight: 400;
-    color: #242f3b;
+    color: #252525;
     overflow-wrap: break-word;
 }
 
@@ -13,7 +13,7 @@
     min-height: 800px;
     min-width: 1600px;
     background-color: rgba(255, 255, 255, 0.637);
-    border: 5px solid #242f3b;
+    border: 5px solid #252525;
     border-radius: 20px;
     padding: 20px;
 }
@@ -142,7 +142,7 @@
     height: 60px;
     width: 130px;
     background: none;
-    background-color: #344566;
+    background-color: #252525;
     font-weight: 600;
     font-size: 26px;
     color: white;
@@ -165,7 +165,7 @@
     height: 90px;
     color: #FFF;
     font-size: 40px;
-    background-color: #242f3b;
+    background-color: #252525;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -187,6 +187,7 @@
     background: none;
     border-radius: 100%;
     border: 2px solid white;
+    transition: all .7s ease-in-out;
 }
 
 .ans:hover {
