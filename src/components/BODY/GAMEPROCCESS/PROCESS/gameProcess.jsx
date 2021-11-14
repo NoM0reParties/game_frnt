@@ -4,18 +4,6 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import QuestionDetail from './questionDetail';
 
-const CSRFToken = Cookies.get('csrftoken');
-const axios = require('axios');
-const myHeaders = {
-    'X-CSRFToken': CSRFToken
-}
-
-const room = window.location.search.split('=')
-
-const gameSocket = new WebSocket(
-    'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
-);
-
 const GameProcess = () => {
     const [currentRound, setCurrentRound] = useState(1);
     const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -30,6 +18,12 @@ const GameProcess = () => {
     const myHeaders = {
         'X-CSRFToken': CSRFToken
     }
+
+    const room = window.location.search.split('=')
+
+    const gameSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
+    );
 
     async function getRound() {
         axios.get(`/api/quiz/players_dashboard?quiz_game_id=${params.id}`,
@@ -48,7 +42,7 @@ const GameProcess = () => {
             })
     };
 
-    async function getPlayers() {
+    async function getQuestions() {
         axios.get(`/api/quiz/quiz_game_round?quiz_game_id=${params.id}&round=${currentRound}`,
             { headers: myHeaders }).then((response) => {
                 let data = response.data;
@@ -91,8 +85,8 @@ const GameProcess = () => {
             checkRound();
         }
         getRound();
-        getPlayers();
-    }, [condition])
+        getQuestions();
+    }, [currentRound])
 
     if (condition === 'final') {
         return <Redirect to="/" />
@@ -136,7 +130,8 @@ const GameProcess = () => {
         return (
             <div className="question__detail">
                 <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition}
-                    game_id={params.id} currentRound={currentRound} gameSocket={gameSocket} />
+                game_id={params.id} currentRound={currentRound} gameSocket={gameSocket}
+                checkRound={checkRound} getRound={getRound} getQuestions={getQuestions}/>
             </div>
         )
     } else if (condition === 'results') {

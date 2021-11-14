@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 
-const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, gameSocket }) => {
+const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, gameSocket, checkRound, getRound, getQuestions }) => {
     const [question, setQuestion] = useState({});
     const [playerReady, setPlayerReady] = useState({});
     const [answers, setAnswers] = useState([])
@@ -120,19 +120,12 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
                 </div>
             )
         } else if (question.hasOwnProperty('audio')) {
-            let audio = new Audio(question.audio);
             return (
                 <div className="question__audio">
-                    <button className="audio" onClick={() => {
-                        audio.play();
-                    }}>Play</button>
-                    <button className="audio" onClick={() => {
-                        audio.pause();
-                    }}>Pause</button>
-                    <button className="audio" onClick={() => {
-                        audio.load();
-                    }}>Reload</button>
-                </div >
+                    <audio autoload="auto" controls>
+                        <source src={question.audio} />
+                    </audio >
+                </div>
             );
         }
     }
@@ -151,9 +144,13 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
                     {playerReady.name}
                     <button className="ans corr_ans" onClick={() => {
                         sendCorr();
+                        checkRound();
+                        getQuestions();
+                        getRound();
                         setPlayerReady({});
                     }}></button>
                     <button className="ans wrong_ans" onClick={() => {
+                        getRound();
                         sendWrong();
                     }}></button>
                     <button className="ans nobody_ans" onClick={() => {
@@ -161,6 +158,9 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
                             'message': "update"
                         }))
                         axios.post('/api/quiz/nobody', { question_id: currentQuestion }, { headers: myHeaders });
+                        checkRound();
+                        getRound();
+                        getQuestions();
                         setCondition('gallery');
                     }}></button>
                 </div>

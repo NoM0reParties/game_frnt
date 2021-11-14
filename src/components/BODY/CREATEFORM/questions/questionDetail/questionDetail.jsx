@@ -61,19 +61,12 @@ const QuestionDetail = () => {
                 </div>
             )
         } else if (question.hasOwnProperty('audio')) {
-            let audio = new Audio(question.audio);
             return (
                 <div className="question__audio">
-                    <button className="audio" onClick={() => {
-                        audio.play();
-                    }}>Play</button>
-                    <button className="audio" onClick={() => {
-                        audio.pause();
-                    }}>Pause</button>
-                    <button className="audio" onClick={() => {
-                        audio.load();
-                    }}>Reload</button>
-                </div >
+                    <audio autoLoad="auto" controls>
+                        <source src={question.audio} />
+                    </audio >
+                </div>
             );
         }
     }

@@ -47,7 +47,7 @@ const PlayerConnection = () => {
             <div className="сhoice__block">
                 <h1 className="form__header">Подключайся к игре</h1>
                 <ul className="choice__list">
-                    <Link className="back" to="/" style={{ backgroundColor: "red" }}></Link>
+                    <Link className="back" to="/" style={{ backgroundColor: "white" }}></Link>
                     {games.map(game => {
                         return (<button id={game.id} key={game.id}
                             onClick={(e) => {

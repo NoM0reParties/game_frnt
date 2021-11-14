@@ -47,9 +47,9 @@ const MainForm = ({ checkLog }) => {
         )
     } else {
         return (
-            <form className="main__form">
+            <form className="main__form" autoComplete="off">
                 <div className="main__form-block">
-                    <label className="main__form-label" aria-autocomplete="false" htmlFor="">Логин</label>
+                    <label className="main__form-label" htmlFor="">Логин</label>
                     <input className="main__form-input" onChange={handleOnChange} name="email"></input>
                 </div>
                 <div className="main__form-block">

@@ -3,19 +3,17 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Cookies from 'js-cookie';
 
-const room = window.location.search.split('=')
-
-const gameSocket = new WebSocket(
-    'ws://' + window.location.host  + '/ws/game/' + room[1] + '/'
-);
-
 const InGame = () => {
+    const room = window.location.search.split('=')
+    
     const [condition, setCondition] = useState('ready');
     const [score, setScore] = useState(0);
     const [bet, setBet] = useState(0);
     const [answer, setAnswer] = useState('');
     const [responder, setResponder] = useState('');
     const [attemptUsed, setAttemptUsed] = useState(false);
+    
+    const gameSocket = new WebSocket('ws://' + window.location.host + '/ws/game/' + room[1] + '/')
 
     let params = useParams();
 
@@ -24,6 +22,8 @@ const InGame = () => {
     const myHeaders = {
         'X-CSRFToken': CSRFToken
     }
+
+    console.log(gameSocket)
 
     gameSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
@@ -36,17 +36,13 @@ const InGame = () => {
             checkScore();
             if (!attemptUsed) {
                 setCondition('button');
-            }     
+            }
         } else if (data.message === 'update') {
             setAttemptUsed(false);
             checkScore();
-            setCondition('ready');   
+            setCondition('ready');
         }
     }
-
-    useEffect(() => {
-        checkScore()
-    }, [])
 
     async function sendReady() {
         setAttemptUsed(true);
@@ -121,7 +117,7 @@ const InGame = () => {
         if (responder) {
             return 'Отвечает ' + responder
         } else {
-            return 'Ждите, пока появится кнопка'
+            return 'Ждите, пока не появится кнопка'
         }
     }
 
