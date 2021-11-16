@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, gameSocket, checkRound, getRound, getQuestions }) => {
     const [question, setQuestion] = useState({});
     const [playerReady, setPlayerReady] = useState({});
+    const [prevent, setPrevent] = useState({});
     const [answers, setAnswers] = useState([])
 
     const CSRFToken = Cookies.get('csrftoken');
@@ -77,14 +78,23 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
         console.log(data)
         if (data.message === 'block') {
             setPlayerReady({ id: data.user_id, name: data.username });
-        } else if (data.message === 'unlock') {
-
         }
     }
 
     useEffect(() => {
         getQuestion();
     }, [])
+
+    useEffect(() => {
+        if (Object.keys(prevent).length === 0) {
+            console.log('122223')
+            setPrevent(playerReady)
+        }
+    }, [playerReady])
+
+    useEffect(() => {
+        console.log('cs', prevent)
+    }, [prevent])
 
     if (!question) {
         return 'Loading...'
@@ -141,16 +151,19 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
                     {putMedia()}
                 </div>
                 <div className="player__ready">
-                    {playerReady.name}
+                    {prevent.name}
                     <button className="ans corr_ans" onClick={() => {
                         sendCorr();
                         checkRound();
                         getQuestions();
                         getRound();
                         setPlayerReady({});
+                        setPrevent({});
                     }}></button>
                     <button className="ans wrong_ans" onClick={() => {
                         getRound();
+                        setPlayerReady({});
+                        setPrevent({});
                         sendWrong();
                     }}></button>
                     <button className="ans nobody_ans" onClick={() => {
@@ -171,7 +184,7 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
             <div className="q__block">
                 <div className="the__question">
                     <button className="qback" onClick={() => {
-                        setCondition('gallery');
+                        setCondition('transition');
                     }}></button>
                     <p className="the__question-text">{question.text}</p>
                     {putMedia()}

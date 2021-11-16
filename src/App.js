@@ -33,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     checkLog()
-  }, [logged])
+  }, [])
 
   return (
     <div className="container">

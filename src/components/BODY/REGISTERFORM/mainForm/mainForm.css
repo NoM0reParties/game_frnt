@@ -37,10 +37,17 @@
 
 @media(max-width: 620px) {
     .main__form {
-        width: 380px;
+        border: 2px solid #252525;
+        background-color: rgba(255, 255, 255, 0.157);
+        width: 370px;
     }
 
     .main__form-block {
+        margin-bottom: 30px;
+        border: 2px solid #252525;
+        border-radius: 20px;
+        padding: 20px 10px;
+        background-color: #ffffff44;
         width: 350px;
     }
 
@@ -51,5 +58,14 @@
 
     .form__header {
         font-size: 30px;
+    }
+
+    .main__form-label {
+        color: #252525;
+    }
+
+    .main__form-btn {
+        color: #ffffff;
+        background-color: #252525;
     }
 }

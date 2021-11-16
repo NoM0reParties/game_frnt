@@ -36,6 +36,20 @@
     border-radius: 100%;
 }
 
+.forbidden {
+    height: 300px;
+    width: 300px;
+    background: none;
+    font-size: 40px;
+    font-weight: 800;
+    color: red;
+    background-color: rgba(255, 255, 255, 0.692);
+    border: 15px solid red;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 300px;
+}
+
 .ready__button:active {
     background-color: #f89900;
 }
@@ -55,8 +69,13 @@
 }
 
 .ready_notion {
+    padding: 30px;
+    width: 320px;
     text-align: center;
     font-size: 30px;
     font-weight: 600;
-    color: white;
+    color: #252525;
+    background-color: #ffffff94;
+    border-radius: 20px;
+    border: 3px solid #252525;
 }

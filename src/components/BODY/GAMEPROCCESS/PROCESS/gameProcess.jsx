@@ -1,6 +1,6 @@
 import './gameProcess.css';
 import { Redirect, useParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import QuestionDetail from './questionDetail';
 
@@ -11,6 +11,7 @@ const GameProcess = () => {
     const [condition, setCondition] = useState('gallery');
     const [players, setPlayers] = useState([])
     const [results, setResults] = useState([])
+    const gameSocket = useRef(null)
     let params = useParams();
 
     const CSRFToken = Cookies.get('csrftoken');
@@ -20,10 +21,6 @@ const GameProcess = () => {
     }
 
     const room = window.location.search.split('=')
-
-    const gameSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
-    );
 
     async function getRound() {
         axios.get(`/api/quiz/players_dashboard?quiz_game_id=${params.id}`,
@@ -36,7 +33,6 @@ const GameProcess = () => {
     async function getResults() {
         axios.get(`/api/quiz/results_table?quiz_game_id=${params.id}`,
             { headers: myHeaders }).then((response) => {
-                console.log(response.data)
                 let data = response.data;
                 setResults(data);
             })
@@ -60,14 +56,6 @@ const GameProcess = () => {
             })
     };
 
-    const clickHandler = (e) => {
-        setCurrentQuestion(e.target.id)
-        gameSocket.send(JSON.stringify({
-            'message': "unlock"
-        }))
-        setCondition('question');
-    }
-
     const transitionText = () => {
         if (currentRound === 1) {
             return 'Перейти ко Второму раунду'
@@ -81,12 +69,33 @@ const GameProcess = () => {
     }
 
     useEffect(() => {
-        if (condition === 'gallery') {
-            checkRound();
-        }
         getRound();
         getQuestions();
+        gameSocket.current = new WebSocket(
+            'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
+        );
+
+        const wsCurrent = gameSocket.current;
+        wsCurrent.onopen = () => console.log('ws opened')
+        wsCurrent.onclose = () => console.log('ws closed');
+
+        return () => {
+            wsCurrent.close();
+        }
+    }, [])
+
+    useEffect(() => {
+        checkRound();
+        getQuestions();
     }, [currentRound])
+
+    const clickHandler = (e) => {
+        setCurrentQuestion(e.target.id)
+        gameSocket.current.send(JSON.stringify({
+            'message': "unlock"
+        }))
+        setCondition('question');
+    }
 
     if (condition === 'final') {
         return <Redirect to="/" />
@@ -130,7 +139,7 @@ const GameProcess = () => {
         return (
             <div className="question__detail">
                 <QuestionDetail currentQuestion={currentQuestion} setCondition={setCondition}
-                game_id={params.id} currentRound={currentRound} gameSocket={gameSocket}
+                game_id={params.id} currentRound={currentRound} gameSocket={gameSocket.current}
                 checkRound={checkRound} getRound={getRound} getQuestions={getQuestions}/>
             </div>
         )

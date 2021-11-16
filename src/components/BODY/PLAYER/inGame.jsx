@@ -1,20 +1,19 @@
 import './inGame.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import Cookies from 'js-cookie';
 
 const InGame = () => {
-    const room = window.location.search.split('=')
-    
     const [condition, setCondition] = useState('ready');
     const [score, setScore] = useState(0);
     const [bet, setBet] = useState(0);
     const [answer, setAnswer] = useState('');
     const [responder, setResponder] = useState('');
     const [attemptUsed, setAttemptUsed] = useState(false);
-    
-    const gameSocket = new WebSocket('ws://' + window.location.host + '/ws/game/' + room[1] + '/')
 
+    const room = window.location.search.split('=')
+
+    const gameSocket = useRef(null)
     let params = useParams();
 
     const CSRFToken = Cookies.get('csrftoken');
@@ -22,34 +21,6 @@ const InGame = () => {
     const myHeaders = {
         'X-CSRFToken': CSRFToken
     }
-
-    console.log(gameSocket)
-
-    gameSocket.onmessage = (e) => {
-        const data = JSON.parse(e.data);
-        console.log(data)
-        if (data.message === 'block') {
-            setResponder(data.username);
-            setCondition('ready');
-        } else if (data.message === 'unlock') {
-            setResponder('');
-            checkScore();
-            if (!attemptUsed) {
-                setCondition('button');
-            }
-        } else if (data.message === 'update') {
-            setAttemptUsed(false);
-            checkScore();
-            setCondition('ready');
-        }
-    }
-
-    async function sendReady() {
-        setAttemptUsed(true);
-        gameSocket.send(JSON.stringify({
-            'message': "ready"
-        }))
-    };
 
     async function checkScore() {
         axios.get(`/api/quiz/player_score?quiz_game_id=${params.id}`, { headers: myHeaders }).then((response) => {
@@ -121,6 +92,53 @@ const InGame = () => {
         }
     }
 
+    useEffect(()=> {
+        gameSocket.current = new WebSocket(
+            'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
+        );
+        const wsCurrent = gameSocket.current;
+        wsCurrent.onopen = () => console.log('ws opened')
+        wsCurrent.onclose = () => console.log('ws closed');
+        gameSocket.current.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            console.log(data)
+            console.log(attemptUsed)
+            if (data.message === 'block') {
+                setResponder(data.username);
+                setCondition('ready');
+            } else if (data.message === 'unlocked') {
+                setResponder('');
+                checkScore();
+                setCondition('button')
+            } else if (data.message === 'updated') {
+                setResponder('');
+                setAttemptUsed(false);
+                checkScore();
+                setCondition('ready');
+            }
+        }
+        checkScore();
+        return () => {
+            wsCurrent.close();
+        }
+    }, [])
+
+    async function sendReady() {
+        gameSocket.current.send(JSON.stringify({
+            'message': "ready"
+        }))
+        console.log('asssssssssss')
+        setAttemptUsed(true);
+    };
+
+    const rdyBtn = () => {
+            if (!attemptUsed) {
+                return <button className="ready__button" onClick={sendReady}>ЗНАЮ!</button>
+            } else {
+                return <div className="forbidden"></div>
+            }
+    }
+
     if (condition === 'ready') {
         return (
             <div className="ready__block">
@@ -136,12 +154,12 @@ const InGame = () => {
                 <div className="ready__info">
                     {scoreDraw()}
                 </div>
-                <button className="ready__button" onClick={sendReady}>ЗНАЮ!</button>
+                {rdyBtn()}
             </div>
         )
     } else if (condition === 'superbet') {
         return (
-            <form className="main__Sockform">
+            <form className="main__form">
                 <div className="ready__info">
                     {scoreDraw()}
                 </div>
