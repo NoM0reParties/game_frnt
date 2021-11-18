@@ -38,7 +38,7 @@ const App = () => {
   return (
     <div className="container">
       <Header username={username}
-          setUsername={setUsername} logged={logged} setLogged={setLogged} />
+        setUsername={setUsername} logged={logged} setLogged={setLogged} />
       <Switch>
         <Route exact path="/">
           <Home logged={logged} />

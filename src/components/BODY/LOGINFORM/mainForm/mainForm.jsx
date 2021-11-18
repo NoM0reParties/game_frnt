@@ -33,10 +33,8 @@ const MainForm = ({ checkLog }) => {
 
     const handleOnChange = (e) => {
         if (e.target.name === 'email') {
-            console.log('1')
             setEmail(e.target.value)
         } else if (e.target.name === 'password') {
-            console.log('2')
             setPassword(e.target.value)
         }
     }

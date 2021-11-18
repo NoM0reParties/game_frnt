@@ -101,8 +101,6 @@ const InGame = () => {
         wsCurrent.onclose = () => console.log('ws closed');
         gameSocket.current.onmessage = (e) => {
             const data = JSON.parse(e.data);
-            console.log(data)
-            console.log(attemptUsed)
             if (data.message === 'block') {
                 setResponder(data.username);
                 setCondition('ready');
@@ -127,7 +125,6 @@ const InGame = () => {
         gameSocket.current.send(JSON.stringify({
             'message': "ready"
         }))
-        console.log('asssssssssss')
         setAttemptUsed(true);
     };
 

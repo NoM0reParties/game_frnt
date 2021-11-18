@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBookmark, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons' 
 
 const ThemesList = ({ myHeaders, setRound }) => {
     const [dragElement, setDragElement] = useState(0)

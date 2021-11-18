@@ -75,7 +75,6 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
 
     gameSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        console.log(data)
         if (data.message === 'block') {
             setPlayerReady({ id: data.user_id, name: data.username });
         }
@@ -87,14 +86,9 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
 
     useEffect(() => {
         if (Object.keys(prevent).length === 0) {
-            console.log('122223')
             setPrevent(playerReady)
         }
     }, [playerReady])
-
-    useEffect(() => {
-        console.log('cs', prevent)
-    }, [prevent])
 
     if (!question) {
         return 'Loading...'

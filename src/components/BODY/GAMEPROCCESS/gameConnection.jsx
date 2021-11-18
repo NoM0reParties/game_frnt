@@ -20,7 +20,6 @@ const GameConnection = () => {
     async function getPlayers() {
         axios.get(`/api/quiz/quiz_game_players?quiz_game_id=${params.id}`, { headers: myHeaders }).then((response) => {
             let data = response.data;
-            console.log(data);
             if (data !== []) {
                 setPlayers(data);
             }
