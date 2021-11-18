@@ -14,5 +14,6 @@
 
 
 .main__form-btn:hover {
-    font-size: 28px;
+    color: #fd7405;
+    border-color: #fd7405;
 }

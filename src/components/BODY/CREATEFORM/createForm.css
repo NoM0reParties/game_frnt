@@ -78,7 +78,8 @@
 }
 
 .choice__btn:hover {
-    font-size: 28px;
+    color: #fd7405;
+    border-color: #fd7405;
 }
 
 .choice__empty {
@@ -107,7 +108,7 @@
 }
 
 .upd__link {
-    opacity: 0%;
+    opacity: 0;
     top: 5px;
     position: absolute;
     margin-right: 20px;
@@ -132,17 +133,17 @@
 }
 
 .obj__row:hover > .icon__trash {
-    opacity: 100%;
+    opacity: 1;
     transform: translateX(-75px);
 }
 
 .obj__row:hover > .icon__edit {
-    opacity: 100%;
+    opacity: 1;
     transform: translateX(-75px);
 }
 
 .obj__row:hover > .icon__round {
-    opacity: 0%;
+    opacity: 0;
 }
 
 .faicon {
@@ -160,7 +161,7 @@
 }
 
 .icon__round {
-    opacity: 100%;
+    opacity: 1;
     left: 20px;
 }
 
@@ -205,6 +206,11 @@
     align-items: center;
     justify-content: space-around;
     cursor: pointer;
+}
+
+.theme__btn:hover{
+    color: #fd7405;
+    border-color: #fd7405;
 }
 
 .theme__empty {
@@ -307,6 +313,11 @@
     justify-content: space-around;
     cursor: pointer;
     transition: all 0.7s ease-in-out;
+}
+
+.questions__btn:hover {
+    color: #fd7405;
+    border-color: #fd7405;
 }
 
 .questions__container {
