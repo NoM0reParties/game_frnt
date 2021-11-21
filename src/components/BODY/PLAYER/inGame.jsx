@@ -4,11 +4,13 @@ import { useParams } from 'react-router';
 import Cookies from 'js-cookie';
 
 const InGame = () => {
+    const [playerID, setPlayerID] = useState(0);
     const [condition, setCondition] = useState('ready');
+    const [responder, setResponder] = useState({});
     const [score, setScore] = useState(0);
     const [bet, setBet] = useState(0);
     const [answer, setAnswer] = useState('');
-    const [responder, setResponder] = useState('');
+    const [prevent, setPrevent] = useState('');
     const [attemptUsed, setAttemptUsed] = useState(false);
 
     const room = window.location.search.split('=')
@@ -21,6 +23,14 @@ const InGame = () => {
     const myHeaders = {
         'X-CSRFToken': CSRFToken
     }
+
+
+    async function getPlayerId() {
+        axios.get('/api/quiz/player_id', { headers: myHeaders }).then((response) => {
+            setPlayerID(response.data.id)
+        })
+    }
+
 
     async function checkScore() {
         axios.get(`/api/quiz/player_score?quiz_game_id=${params.id}`, { headers: myHeaders }).then((response) => {
@@ -85,14 +95,15 @@ const InGame = () => {
     }
 
     const makeMessage = () => {
-        if (responder) {
-            return 'Отвечает ' + responder
+        if (prevent) {
+            return 'Отвечает ' + prevent
         } else {
             return 'Ждите, пока не появится кнопка'
         }
     }
 
     useEffect(()=> {
+        getPlayerId();
         gameSocket.current = new WebSocket(
             'ws://' + window.location.host + '/ws/game/' + room[1] + '/'
         );
@@ -102,14 +113,16 @@ const InGame = () => {
         gameSocket.current.onmessage = (e) => {
             const data = JSON.parse(e.data);
             if (data.message === 'block') {
-                setResponder(data.username);
+                setResponder({username: data.username, id: data.user_id});
                 setCondition('ready');
             } else if (data.message === 'unlocked') {
-                setResponder('');
+                setResponder({});
+                setPrevent('');
                 checkScore();
                 setCondition('button')
             } else if (data.message === 'updated') {
-                setResponder('');
+                setResponder({});
+                setPrevent('');
                 setAttemptUsed(false);
                 checkScore();
                 setCondition('ready');
@@ -125,8 +138,16 @@ const InGame = () => {
         gameSocket.current.send(JSON.stringify({
             'message': "ready"
         }))
-        setAttemptUsed(true);
     };
+
+    useEffect(() => {
+        if (!prevent) {
+            setPrevent(responder.username)
+            if (playerID === responder.id) {
+                setAttemptUsed(true)
+            }
+        }
+    }, [responder])
 
     const rdyBtn = () => {
             if (!attemptUsed) {

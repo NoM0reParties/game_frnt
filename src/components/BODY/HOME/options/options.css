@@ -16,11 +16,15 @@
     font-size: 30px;
     justify-content: center;
     align-items: center;
+    transition: background-color 0.7s ease-in-out;
 }
 
 .options__item-link {
     text-decoration: none;
-    color: #344566;
+}
+
+.options__item-link:hover > .options__item {
+    background-color: #fd7405;
 }
 
 @media(max-width: 720px) {

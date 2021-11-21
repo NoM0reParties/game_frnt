@@ -23,7 +23,7 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
 
     async function sendCorr() {
         const payload = {
-            player_id: playerReady.id,
+            player_id: prevent.id,
             game_id: game_id,
             question_id: currentQuestion
         }
@@ -38,7 +38,7 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
 
     async function sendWrong() {
         const payload = {
-            player_id: playerReady.id,
+            player_id: prevent.id,
             game_id: game_id,
             question_id: currentQuestion
         }
@@ -140,6 +140,9 @@ const QuestionDetail = ({ currentQuestion, setCondition, game_id, currentRound, 
                 <div className="the__question">
                     <button className="qback" onClick={() => {
                         setCondition('gallery');
+                        gameSocket.send(JSON.stringify({
+                            'message': "update"
+                        }));
                     }}></button>
                     <p className="the__question-text">{question.text}</p>
                     {putMedia()}
